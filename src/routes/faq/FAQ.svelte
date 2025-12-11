@@ -1,75 +1,40 @@
 <script>
-  import { onMount } from 'svelte';
+    let active = null;
+    const faqs = [
+        { q: "¿Es seguro dar mis datos?", a: "Totalmente. LeadConnect usa cifrado de extremo a extremo vía WhatsApp y solo comparte los datos necesarios con AT&T." },
+        { q: "¿Tiene algún costo?", a: "No. La portabilidad es un derecho gratuito." },
+        { q: "¿Cuánto tarda?", a: "Una vez entregada la SIM y validado el NIP, el proceso toma 24 horas hábiles." }
+    ];
 
-  onMount(() => {
-    document.querySelectorAll('.faq-header').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const item = btn.closest('.faq-item');
-        const isOpen = item.classList.contains('open');
-
-        // Cerrar todos
-        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-
-        // Abrir solo el actual si no estaba abierto
-        if (!isOpen) {
-          item.classList.add('open');
-        }
-      });
-    });
-  });
+    const toggle = (i) => active = active === i ? null : i;
+    const handleKey = (e, i) => { if(e.key === 'Enter') toggle(i); }
 </script>
 
-<div class="faq-wrap">
-  <div class="faq-container">
-    <h2 class="faq-title">Preguntas Frecuentes</h2>
+<section class="section fade-up">
+    <div class="container" style="max-width: 800px;">
+        <h1 class="text-neon" style="text-align: center; margin-bottom: 40px;">Preguntas Frecuentes</h1>
 
-    <div class="faq-item">
-      <button class="faq-header" type="button">
-        ¿Qué es LeadConnect?
-        <span class="icon">+</span>
-      </button>
-      <div class="faq-content">
-        <p>
-          LeadConnect es una plataforma de gestión y contacto comercial especializada en la promoción, validación y activación de planes AT&T mediante procesos digitales verificados.
-        </p>
-      </div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            {#each faqs as faq, i}
+                <div 
+                    class="glass-card" 
+                    style="padding: 0; cursor: pointer; transition: 0.3s;" 
+                    role="button" 
+                    tabindex="0"
+                    on:click={() => toggle(i)}
+                    on:keydown={(e) => handleKey(e, i)}
+                >
+                    <div style="padding: 24px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 600; font-size: 1.05rem; color: var(--text-main);">{faq.q}</span>
+                        <span style="color: var(--primary); font-size: 1.5rem; font-weight: 700;">{active === i ? '−' : '+'}</span>
+                    </div>
+                    {#if active === i}
+                        <div style="padding: 0 24px 24px; color: var(--text-muted); border-top: 1px solid var(--glass-border);">
+                            <p style="margin-top: 16px; margin-bottom: 0;">{faq.a}</p>
+                        </div>
+                    {/if}
+                </div>
+            {/each}
+        </div>
     </div>
-
-    <div class="faq-item">
-      <button class="faq-header" type="button">
-        ¿LeadConnect es una empresa de AT&T?
-        <span class="icon">+</span>
-      </button>
-      <div class="faq-content">
-        <p>
-          No. LeadConnect actúa como facilitador tecnológico y canal de gestión comercial autorizado para la activación de planes y portabilidades hacia AT&T.
-        </p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-header" type="button">
-        ¿Me contactarán por WhatsApp?
-        <span class="icon">+</span>
-      </button>
-      <div class="faq-content">
-        <p>
-          Sí. Al enviar tus datos autorizas a LeadConnect a contactarte por WhatsApp para el seguimiento de tu trámite de portabilidad, activación de SIM y soporte del servicio.
-        </p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-header" type="button">
-        ¿Tiene algún costo?
-        <span class="icon">+</span>
-      </button>
-      <div class="faq-content">
-        <p>
-          El uso de LeadConnect no tiene costo para el usuario. Los cargos aplicables corresponden únicamente a los planes contratados con AT&T.
-        </p>
-      </div>
-    </div>
-
-  </div>
-</div>
+</section>
