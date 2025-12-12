@@ -1,7 +1,15 @@
+# Dependencias de Node
 node_modules/
-build/
-dist/
-public/build/
+
+# Archivos de log
 npm-debug.log
 .DS_Store
+
+# Carpeta build/ global de Svelte
+build/
+dist/
+
+# No ignoramos public/build/ porque quieres subir el compilado
+
+# Variables de entorno
 .env
